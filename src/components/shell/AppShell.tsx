@@ -44,7 +44,7 @@ export function AppShell({ children, quickActions }: AppShellProps) {
 
       <nav
         aria-label="Main"
-        className="sticky top-0 hidden h-dvh w-[216px] shrink-0 flex-col gap-7 overflow-y-auto bg-sidebar px-4 py-6 md:flex"
+        className="sticky top-0 hidden h-dvh w-[200px] shrink-0 flex-col gap-7 overflow-y-auto bg-sidebar px-4 py-6 md:flex"
       >
         <Link href="/" className="flex min-h-11 items-center gap-2.5 px-2 text-ink no-underline">
           <LogoIcon />

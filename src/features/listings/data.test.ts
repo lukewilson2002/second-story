@@ -84,6 +84,25 @@ describe("highestMinimumPriceCents", () => {
   });
 });
 
+describe("loadListingFormOptions", () => {
+  it("offers the starter marketplaces in the order of the list, then newer ones", async () => {
+    const fresh = await createTestDb();
+    try {
+      await createMarketplace(fresh.db, fresh.userId, "Depop");
+      const options = await loadListingFormOptions(fresh.db, fresh.userId);
+      expect(options.marketplaces.map((marketplace) => marketplace.name)).toEqual([
+        "eBay",
+        "Mercari",
+        "Facebook Marketplace",
+        "Vinted",
+        "Depop",
+      ]);
+    } finally {
+      await fresh.close();
+    }
+  });
+});
+
 describe("saveListing", () => {
   it("saves a draft without publishing it", async () => {
     const saved = await saveListing(t.db, t.userId, boardListing({ intent: "draft" }));

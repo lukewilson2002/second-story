@@ -582,7 +582,7 @@ export function ListingForm({ options, values, manage }: ListingFormProps) {
                 </p>
               ))
             )}
-            <Link href="/settings/marketplaces" className="mt-1 inline-flex min-h-11 items-center font-semibold text-primary-text">
+            <Link href="/settings/marketplaces" className="mt-1 inline-flex min-h-11 items-center font-semibold text-primary-text underline">
               Edit fee rules
             </Link>
           </Card>

@@ -51,6 +51,7 @@ PGlite allows one process per data directory, and `next dev` allows one server p
 - Run your own server with `PORT=<your port> pnpm dev:isolated`. It creates `.pglite/dev-<port>` and `.next-dev-<port>`, all gitignored.
 - Run Playwright with your own port: `E2E_PORT=<your port> pnpm test:e2e`. Add `E2E_DEV=1` to skip the production build while writing tests.
 - To run only your tests: `E2E_PORT=3105 pnpm test:e2e e2e/inventory`.
+- `E2E_REAL_SERVICES=1 pnpm test:e2e` runs only `e2e/live`, against the real Cloudinary, RapidAPI and PriceCharting, with the keys from `.env.local`. A default run leaves those specs out. See section 13.
 - Vitest needs nothing. Each `createTestDb()` is its own in-memory database.
 
 ## 3. Environment
@@ -59,7 +60,7 @@ PGlite allows one process per data directory, and `next dev` allows one server p
 
 - Never print, log, copy or commit values from `.env.local`.
 - Read secrets through `src/lib/env.ts`: `authEnv()`, `cloudinaryEnv()`, `hasCloudinaryEnv()`, `rapidApiEnv()`, `hasRapidApiEnv()`. They validate on first use, so the build needs no secrets.
-- The Playwright server blanks the Cloudinary and RapidAPI variables, so e2e tests cannot spend real quota. Features must show a sensible "not set up" state when `hasCloudinaryEnv()` or `hasRapidApiEnv()` is false, and tests should stub the network.
+- The Playwright server blanks the Cloudinary and RapidAPI variables unless `E2E_REAL_SERVICES` is set, so a default e2e run cannot spend real quota. Features must show a sensible "not set up" state when `hasCloudinaryEnv()` or `hasRapidApiEnv()` is false, and tests should stub the network.
 
 ## 4. Route map and ownership
 
@@ -405,3 +406,13 @@ Playwright:
 Before handing work back, run `pnpm typecheck`, `pnpm lint`, `pnpm test` and your e2e tests. The first three cover the whole tree, so another agent's unfinished work can turn them red. Check whether a failure is in your files before chasing it.
 
 The top-level specs (`e2e/login.spec.ts`, `e2e/shell.spec.ts`, `e2e/primitives.spec.ts`) check only the shell, login and primitives. They do not depend on any page's heading or content, so replacing a placeholder should not break them.
+- `e2e/journey.spec.ts` follows one item from purchase to sale. Its expected figures are literals worked out by hand from the design doc's formulas. Do not replace them with calls into `src/lib/calc`.
+
+Live services (`e2e/live`, the `live` project):
+
+- Run with `E2E_REAL_SERVICES=1 E2E_PORT=<port> pnpm test:e2e`. Only the `live` project runs then, on a production build, one desktop viewport, with tracing off because a trace would record the upload signature.
+- Its database is `.pglite/e2e-live-<port>` and is kept between runs. The 24-hour lookup cache then answers a repeat run, so only the first run of a day spends one of the 50 monthly eBay requests. Delete the folder to start clean.
+- `live.spec.ts`: an eBay search and its cached repeat, a PriceCharting search, and a real Cloudinary upload that is deleted again and checked against Cloudinary's Admin API.
+- `photos-stubbed.spec.ts`: the app's half of the photo flow with Cloudinary's hosts answered in the browser. It is in this project because the uploader only shows when the Cloudinary variables are set.
+- Never print a key, a signature or the sign response from these specs. Compare booleans and counts.
+- The lookup page searches every source for one query, so any unstubbed `/lookup?q=` with a new query spends an eBay request.

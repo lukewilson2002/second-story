@@ -76,9 +76,13 @@ export async function seedBase(db: DbOrTrx, ownerEmail: string): Promise<string>
     .limit(1)
     .executeTakeFirst();
   if (!hasMarketplaces) {
+    // The listing form shows marketplaces oldest first. Rows inserted together would share one timestamp
+    // and fall back to id order, which is random. A millisecond apart keeps the order of the list.
+    // The times are in the past, so a marketplace added straight afterwards still sorts last.
+    const now = Date.now() - SEED_MARKETPLACES.length;
     await db
       .insertInto("marketplace")
-      .values(SEED_MARKETPLACES.map((name) => ({ user_id: userId, name })))
+      .values(SEED_MARKETPLACES.map((name, index) => ({ user_id: userId, name, created_at: new Date(now + index) })))
       .execute();
   }
 

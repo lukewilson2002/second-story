@@ -1,6 +1,7 @@
 import { spawn, spawnSync } from "node:child_process";
-import { existsSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { parseEnv } from "node:util";
 import { loadEnvConfig } from "@next/env";
 
 /**
@@ -10,6 +11,8 @@ import { loadEnvConfig } from "@next/env";
  *   tsx scripts/isolated-server.ts e2e   Playwright's server. Fresh database with the demo seed, then a production
  *                                        build served by `next start`. Uses .env.test. Port from E2E_PORT (default 3100).
  *                                        Set E2E_DEV=1 to serve with `next dev` instead, which starts faster.
+ *                                        Set E2E_REAL_SERVICES=1 to keep the real Cloudinary and RapidAPI keys from .env.local
+ *                                        and a database that is kept between runs (`.pglite/e2e-live-<port>`).
  *   tsx scripts/isolated-server.ts dev   A second dev server. Uses .env.development and .env.local. Port from PORT (required).
  *                                        The database is seeded with demo data the first time and kept afterwards.
  *
@@ -28,7 +31,8 @@ if (!port || !/^\d+$/.test(port)) {
 }
 
 const root = process.cwd();
-const name = `${mode}-${port}`;
+const realServices = mode === "e2e" && Boolean(process.env.E2E_REAL_SERVICES);
+const name = realServices ? `e2e-live-${port}` : `${mode}-${port}`;
 const dataDir = path.join(root, ".pglite", name);
 const distDir = `.next-${name}`;
 const tsconfigPath = `${distDir}.tsconfig.json`;
@@ -46,10 +50,14 @@ const env: Record<string, string | undefined> = {
   NEXT_TSCONFIG_PATH: tsconfigPath,
   DATABASE_URL: "",
 };
-if (mode === "e2e" && !process.env.E2E_REAL_SERVICES) {
-  // `next start` loads .env.local too. Blank values set here win over it, so an e2e run cannot spend the owner's API quota.
+if (mode === "e2e") {
+  // Blank values set here win over anything `next start` loads, so a default e2e run cannot spend the owner's API quota.
+  // With E2E_REAL_SERVICES the real values are read from .env.local here and passed on.
+  // `next start` does not load that file itself in this setup, because the env files were already loaded once above.
+  const localPath = path.join(root, ".env.local");
+  const local = realServices && existsSync(localPath) ? parseEnv(readFileSync(localPath, "utf8")) : {};
   for (const key of ["CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET", "RAPIDAPI_KEY"]) {
-    env[key] = "";
+    env[key] = local[key] ?? "";
   }
 }
 
@@ -65,7 +73,9 @@ function run(args: string[], runEnv: string): void {
 writeFileSync(path.join(root, tsconfigPath), `${JSON.stringify({ extends: "./tsconfig.json" }, null, 2)}\n`);
 
 // Seeding finishes before the server starts, because PGlite allows one process per data directory.
-if (mode === "e2e" || !existsSync(dataDir)) {
+// The live-services database is kept between runs. Its 24-hour lookup cache then answers a repeat run,
+// so only the first run of a day spends an eBay request.
+if ((mode === "e2e" && !realServices) || !existsSync(dataDir)) {
   run(["tsx", "scripts/db.ts", "reset"], nodeEnv);
   run(["tsx", "scripts/db.ts", "seed:demo"], nodeEnv);
 }
