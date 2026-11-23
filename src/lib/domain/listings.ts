@@ -2,6 +2,12 @@ import { minimumPriceToBreakEvenCents, saleBreakdown, type FeeTerms, type SaleBr
 import type { DbOrTrx } from "@/lib/db";
 import { loadPurchaseSummaries, purchaseSummaryFor } from "./items";
 
+/**
+ * An active listing is stale once it has been up for more than this many days.
+ * The design doc names no number. The dashboard count and the listings filter both use this one, so they agree.
+ */
+export const STALE_LISTING_DAYS = 60;
+
 export interface ListingPricing {
   /** Asking price per unit of the listing. */
   askingPriceCents: number;

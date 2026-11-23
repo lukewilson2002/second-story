@@ -597,6 +597,26 @@ describe("recordSale and the database helpers", () => {
     expect(await onHand(item)).toBe(1);
   });
 
+  it("rejects a sale on a marketplace the listing was taken down from", async () => {
+    const item = await addItem("Taken down", book, [[1, 100, "2026-11-01"]]);
+    const listing = await addListing({ title: "Taken down", items: [[item, 1]], marketplaces: [ebay, mercari] });
+    await t.db
+      .updateTable("listing_marketplace")
+      .set({ status: "ended", ended_at: new Date() })
+      .where("listing_id", "=", listing)
+      .where("marketplace_id", "=", mercari)
+      .execute();
+    const input = { listingId: listing, soldAt: "2026-11-21", salePriceCents: 1000 };
+
+    await expect(previewSale(t.db, t.userId, { ...input, marketplaceId: mercari })).rejects.toMatchObject({ code: "not_on_marketplace" });
+    await expect(recordSale(t.db, t.userId, { ...input, marketplaceId: mercari })).rejects.toMatchObject({ code: "not_on_marketplace" });
+    expect(await onHand(item)).toBe(1);
+
+    const sale = await recordSale(t.db, t.userId, { ...input, marketplaceId: ebay });
+    expect(sale.listingSoldOut).toBe(true);
+    expect(sale.stillActiveOnMarketplaceIds).toEqual([]);
+  });
+
   it("does not let another user sell a listing", async () => {
     const item = await addItem("Private", book, [[1, 100, "2026-11-01"]]);
     const listing = await addListing({ title: "Private", items: [[item, 1]], marketplaces: [ebay] });

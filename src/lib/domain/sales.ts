@@ -66,6 +66,7 @@ async function computeSale(
     .where("listing_id", "=", listing.id)
     .where("marketplace_id", "=", input.marketplaceId)
     .where("user_id", "=", userId)
+    .where("status", "=", "active")
     .executeTakeFirst();
   if (!onMarketplace) {
     throw new DomainError("not_on_marketplace", "This listing is not up on that marketplace.");
@@ -144,7 +145,7 @@ export async function previewSale(db: DbOrTrx, userId: string, input: RecordSale
  * If the sale uses up the listing's quantity, the listing becomes `sold` and its row for the marketplace it sold on becomes `ended`.
  * Rows for other marketplaces stay `active`, so the dashboard can flag them as "take this down".
  *
- * Throws a DomainError if the listing is missing or not active, is not on that marketplace, has too few units left, or an item has too little stock.
+ * Throws a DomainError if the listing is missing or not active, is not up on that marketplace (a taken-down row does not count), has too few units left, or an item has too little stock.
  * Pass a transaction as `db` to make it part of a larger one.
  */
 export async function recordSale(db: Db, userId: string, input: RecordSaleInput): Promise<RecordedSale> {

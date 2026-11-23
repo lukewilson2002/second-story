@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Placeholder } from "@/components/shell/Placeholder";
+import { PageHeader } from "@/components/shell";
+import { Scanner } from "@/features/quick-actions/scan/Scanner";
 import { requireUser } from "@/lib/auth";
 
 export const metadata: Metadata = { title: "Scan barcode" };
 
-/** PLACEHOLDER from the foundation. The dashboard feature replaces this page. */
 export default async function Page() {
   await requireUser();
   return (
-    <Placeholder
-      title="Scan barcode"
-      owner="dashboard"
-      detail="The dashboard feature builds the camera scanner here. It redirects to /inventory/new with the identifier filled in."
-    />
+    <>
+      <PageHeader
+        title="Scan barcode"
+        description="Point the camera at a UPC, EAN or ISBN barcode. Add item opens with the number filled in."
+      />
+      <Scanner />
+    </>
   );
 }

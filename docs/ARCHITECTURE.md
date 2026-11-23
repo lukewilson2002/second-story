@@ -174,6 +174,7 @@ export async function addStock(_previous: ActionResult<{ id: string }> | null, f
 - Call `redirect()` outside the `try`, because it works by throwing.
 - After a write, `revalidatePath` every page that shows the data. A sale changes `/`, `/inventory`, `/listings` and `/sales`.
 - In the form use `useActionState`, show `state.error` in `<FormError>` and pass `state.fieldErrors?.name` to `<Field error>`.
+- Inventory and settings forms submit from `onSubmit` through a small hook instead (`inventory/use-form-action.ts`, `settings/components/useActionForm.ts`). React clears uncontrolled fields after a form action, even on a validation error. Listings and sales use `useActionState` with controlled fields.
 - Money fields post text. Parse with `dollarsFieldSchema` or `optionalDollarsFieldSchema`. Percent fields use `percentFieldSchema` or `optionalPercentFieldSchema`.
 
 ### Components
@@ -329,6 +330,7 @@ projectListingMarketplace({ listing, marketplaceAskingPriceCents, unitCostCents,
 loadListingCosts(db, userId, listingIds?): Promise<Map<string, ListingCost>>   // { unitCostCents, feeCategoryId, items[] }
 listingCostFor(costs, listingId): ListingCost
 loadListingSoldQuantities(db, userId, listingIds?): Promise<Map<string, number>>
+STALE_LISTING_DAYS                                               // 60: the dashboard count and the listings filter both use it
 
 // sales
 previewSale(db, userId, input): Promise<SalePreview>
@@ -350,7 +352,7 @@ Rules these encode:
 
 In one transaction it snapshots cost of goods, fee and commission on the sale row, takes `quantity_per_unit × quantity` off each item, and, if the listing's quantity is used up, sets the listing to `sold` and its row for the selling marketplace to `ended`. Rows for other marketplaces stay `active`: those are the dashboard's "sold, still up elsewhere". It throws `DomainError` with codes `not_found`, `listing_not_active`, `not_on_marketplace`, `not_enough_listing_quantity`, `not_enough_stock`, `invalid`. `previewSale` does the same checks and math without writing, for prefilling the fee on the mark-sold form.
 
-Only an `active` listing can be sold. All marking sold goes through `recordSale`.
+Only an `active` listing can be sold, and only on a marketplace where its row is still `active`. A row that was taken down gives `not_on_marketplace`. All marking sold goes through `recordSale`.
 
 ## 11. Shared schemas and helpers: `src/lib`
 
@@ -395,6 +397,10 @@ Playwright:
 - The database is the demo seed (`src/lib/db/demo-seed.ts`), rebuilt at the start of every run. Dates are relative to today.
 - One worker, one shared database. A test that writes should create what it needs and not depend on exact counts from the seed.
 - `e2e/helpers.ts` has `logIn(page)` and `ownerCredentials()` for tests that start signed out.
+- `e2e/helpers.ts` also has `findSmallControls(page)` (controls under 44px) and `collectPageErrors(page)` (uncaught and console errors).
+- `e2e/sweep.spec.ts` opens every route and one detail page of each kind and checks for errors, sideways scroll and undersized controls. Add new routes to its list.
+- `e2e/cross-feature.spec.ts` checks that the dashboard's needs-attention counts match the filtered pages, and that prefill links between features work.
+- Stub `/api/lookup` in any test that opens `/lookup?q=`. PriceCharting needs no key, so an unstubbed search reaches the live site.
 
 Before handing work back, run `pnpm typecheck`, `pnpm lint`, `pnpm test` and your e2e tests. The first three cover the whole tree, so another agent's unfinished work can turn them red. Check whether a failure is in your files before chasing it.
 
