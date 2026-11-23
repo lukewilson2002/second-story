@@ -388,3 +388,29 @@ describe("loadDashboard", () => {
     expect(empty.stock.units).toBe(9);
   });
 });
+
+describe("recorded sales", () => {
+  it("keep their figures when fee rules and purchase costs change afterwards", async () => {
+    const before = {
+      november: await loadPeriodSummary(t.db, t.userId, NOVEMBER),
+      october: await loadPeriodSummary(t.db, t.userId, OCTOBER),
+      byMarketplace: await loadProfitByMarketplace(t.db, t.userId, NOVEMBER),
+      byCategory: await loadProfitByCategory(t.db, t.userId, NOVEMBER),
+      recent: await loadRecentSales(t.db, t.userId),
+      owed: await loadCommissionOwedCents(t.db, t.userId),
+    };
+
+    await t.db.updateTable("fee_rule").set({ percent_bps: 9000, fixed_cents: 500 }).where("user_id", "=", t.userId).execute();
+    await t.db.updateTable("purchase").set({ unit_cost_cents: 99_900 }).where("user_id", "=", t.userId).execute();
+    await t.db.updateTable("listing").set({ commission_bps: 5000 }).where("user_id", "=", t.userId).execute();
+
+    expect({
+      november: await loadPeriodSummary(t.db, t.userId, NOVEMBER),
+      october: await loadPeriodSummary(t.db, t.userId, OCTOBER),
+      byMarketplace: await loadProfitByMarketplace(t.db, t.userId, NOVEMBER),
+      byCategory: await loadProfitByCategory(t.db, t.userId, NOVEMBER),
+      recent: await loadRecentSales(t.db, t.userId),
+      owed: await loadCommissionOwedCents(t.db, t.userId),
+    }).toEqual(before);
+  });
+});

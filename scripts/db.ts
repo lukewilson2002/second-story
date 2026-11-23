@@ -1,11 +1,28 @@
 import { loadEnv } from "./load-env";
 
+// Read before loadEnv(), which fills in OWNER_EMAIL from .env.development when the shell did not set it.
+const ownerEmailFromShell = process.env.OWNER_EMAIL?.trim().toLowerCase();
+
 loadEnv();
 
 const COMMANDS = ["migrate", "seed", "seed:demo", "reset"] as const;
 type Command = (typeof COMMANDS)[number];
 
+/**
+ * The email the owner row is seeded under.
+ * If DATABASE_URL is set, OWNER_EMAIL must be given on the command line.
+ * Otherwise the dev login from .env.development would be seeded into the real database as a second user.
+ */
 function ownerEmail(): string {
+  if (process.env.DATABASE_URL?.trim()) {
+    if (!ownerEmailFromShell) {
+      throw new Error(
+        "Set OWNER_EMAIL on the command line when DATABASE_URL is set, to the same address as in Vercel. " +
+          "For example: DATABASE_URL='postgresql://...' OWNER_EMAIL='you@example.com' pnpm db:seed",
+      );
+    }
+    return ownerEmailFromShell;
+  }
   const email = process.env.OWNER_EMAIL?.trim().toLowerCase();
   if (!email) throw new Error("OWNER_EMAIL is not set. See .env.example.");
   return email;
@@ -35,6 +52,8 @@ async function main(): Promise<void> {
     console.log(`Deleted the ${where}.`);
   }
   if (command === "seed:demo") assertLocalOnly(command);
+  // Worked out before anything connects, so a missing OWNER_EMAIL stops the command before it touches the database.
+  const seedEmail = command === "migrate" ? null : ownerEmail();
 
   const db = getDb();
   try {
@@ -44,12 +63,12 @@ async function main(): Promise<void> {
 
     if (command === "seed" || command === "reset") {
       const { seedBase } = await import("../src/lib/db/seed");
-      await seedBase(db, ownerEmail());
+      await seedBase(db, seedEmail ?? ownerEmail());
       console.log("Seeded the owner, categories and marketplaces.");
     }
     if (command === "seed:demo") {
       const { seedDemo } = await import("../src/lib/db/demo-seed");
-      const summary = await seedDemo(db, ownerEmail());
+      const summary = await seedDemo(db, seedEmail ?? ownerEmail());
       console.log(`Seeded demo data: ${summary.items} items, ${summary.listings} listings, ${summary.sales} sales.`);
     }
   } finally {

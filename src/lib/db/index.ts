@@ -39,15 +39,30 @@ function remoteDialect(url: string): Dialect {
         const { Pool, types } = await import("@neondatabase/serverless");
         types.setTypeParser(DATE_OID, (value: string) => value);
         types.setTypeParser(INT8_OID, (value: string) => Number(value));
+        const pool = new Pool({ connectionString: url, max: 5 });
+        pool.on("error", logIdleClientError);
         // Neon's Pool is the `pg` Pool with a WebSocket transport. Its typings differ only in what Client.connect() resolves to.
-        return new Pool({ connectionString: url, max: 5 }) as unknown as PostgresPool;
+        return pool as unknown as PostgresPool;
       }
       const pg = await import("pg");
       pg.types.setTypeParser(DATE_OID, (value: string) => value);
       pg.types.setTypeParser(INT8_OID, (value: string) => Number(value));
-      return new pg.Pool({ connectionString: url, max: 5 });
+      const pool = new pg.Pool({ connectionString: url, max: 5 });
+      pool.on("error", logIdleClientError);
+      return pool;
     },
   });
+}
+
+/**
+ * Neon closes idle connections, and the pool reports that as an "error" event on the idle client.
+ * If nothing listens for the event, Node treats it as an uncaught error and the server process exits.
+ * The pool has already dropped the client, so the next query opens a new connection.
+ * Only the error code is logged, because the message can hold the database host.
+ */
+function logIdleClientError(error: Error): void {
+  const code = (error as NodeJS.ErrnoException).code ?? error.name;
+  console.warn(`An idle database connection was closed (${code}). The pool will reconnect.`);
 }
 
 function createDb(): Db {

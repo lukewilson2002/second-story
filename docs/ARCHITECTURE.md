@@ -36,7 +36,7 @@ Next.js 16 differs from older versions. Its docs ship in `node_modules/next/dist
 | `pnpm test:e2e` | Playwright. Builds and boots its own server on a fresh, demo-seeded database |
 | `pnpm build` | Production build |
 | `pnpm db:migrate` | Run pending migrations (local, or `DATABASE_URL` if set) |
-| `pnpm db:seed` | Owner, starter categories, starter marketplaces. Idempotent |
+| `pnpm db:seed` | Migrations, then owner, starter categories, starter marketplaces. Idempotent. With `DATABASE_URL` set it needs `OWNER_EMAIL` on the command line |
 | `pnpm db:seed:demo` | Demo items, listings, fee rules and sales. Local only, needs an empty inventory |
 | `pnpm db:reset` | Delete the local database, migrate and seed. Local only |
 | `pnpm db:codegen` | Regenerate `src/lib/db/types.ts` from the migrations |
@@ -359,7 +359,7 @@ Only an `active` listing can be sold, and only on a marketplace where its row is
 
 - `schemas`: `uuidSchema`, `centsSchema`, `bpsSchema`, `quantitySchema`, `isoDateSchema`, `requiredTextSchema`, `optionalTextSchema`, `dollarsFieldSchema`, `optionalDollarsFieldSchema`, `percentFieldSchema`, `optionalPercentFieldSchema`, `quantityFieldSchema`, `identifierTypeSchema`, `IDENTIFIER_TYPES`, `IDENTIFIER_TYPE_LABELS`, `normalizeIdentifier`, `guessIdentifierType`, `identifierInputSchema`, `listingStatusSchema`, `itemStatusSchema`, `ITEM_STATUS_LABELS`, `feeRuleInputSchema`, `recordSaleInputSchema`.
 - `action`: `ActionResult`, `actionOk`, `actionError`, `validationError`, `formDataToObject`.
-- `auth`: `requireUser`, `getUserId`. `auth/actions`: `login`, `logout`.
+- `auth`: `requireUser`, `getUserId`. `auth/actions`: `login`, `logout`. `auth/redirect`: `safeNextPath`, which decides where login may send the browser.
 - `db`: `getDb`, `Db`, `DbOrTrx`, `DB`. `db/seed`: `seedBase`. `db/testing`: `createTestDb`.
 - `cn`: `cn(...classes)`.
 
@@ -416,3 +416,16 @@ Live services (`e2e/live`, the `live` project):
 - `photos-stubbed.spec.ts`: the app's half of the photo flow with Cloudinary's hosts answered in the browser. It is in this project because the uploader only shows when the Cloudinary variables are set.
 - Never print a key, a signature or the sign response from these specs. Compare booleans and counts.
 - The lookup page searches every source for one query, so any unstubbed `/lookup?q=` with a new query spends an eBay request.
+
+## 14. Production (Vercel and Neon)
+
+`README.md` has the owner's hosting checklist. What the code does differently there:
+
+- `DATABASE_URL` picks the driver. A `*.neon.tech` host uses the `Pool` from `@neondatabase/serverless` (WebSocket, so transactions and `FOR UPDATE` work). Any other host uses `pg`. Both go through Kysely's `PostgresDialect` with the same type parsers as PGlite.
+- Neon's `Pool` needs a global `WebSocket`, which Node has from version 22. `package.json` sets `engines.node` to match.
+- Migrations do not run on their own against `DATABASE_URL`. The owner runs `pnpm db:seed` (or `pnpm db:migrate`) with `DATABASE_URL` on the command line. Only the local PGlite database migrates itself on first use.
+- If `VERCEL` is set and `DATABASE_URL` is not, `getDb()` throws. Nothing writes to the filesystem at runtime outside `src/lib/db/local.ts`, which only runs for PGlite.
+- If `VERCEL` is set at build time, `next.config.ts` leaves PGlite out of the function file traces. It is about 20 MB and is never loaded there.
+- The session cookie is `Secure` when `VERCEL` is set.
+- `next.config.ts` sends `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff` and a `Referrer-Policy` on every response.
+- The Neon path has never run a query from this repo. A connection attempt with made-up credentials reached Neon and was refused at the password check, which shows the driver, the WebSocket transport and the dialect are wired. Queries, transactions and the type parsers on Neon are unverified until the owner runs step 4 of the README.
