@@ -108,7 +108,9 @@ Deploy from the Vercel dashboard, or push to the production branch. The app does
 Open the site and log in with `OWNER_EMAIL` and the password you typed into `pnpm hash-password`. You stay logged in for 30 days on that browser.
 
 - To change the password, run `pnpm hash-password` again, replace `OWNER_PASSWORD_HASH` in Vercel and redeploy.
+  Browsers that are already logged in stay logged in. Replace `SESSION_SECRET` as well to end those sessions.
 - To log out every browser at once, replace `SESSION_SECRET` in Vercel and redeploy.
+- Do not change `OWNER_EMAIL` once you have data. Your data belongs to the user row for that email, so a new email logs into a new, empty account.
 
 ### 7. Enter your fee rules
 
