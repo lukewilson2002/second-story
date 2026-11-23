@@ -1,0 +1,18 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-11-23T12:00:00Z" },
+  "title": "Second Story",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1360, "h": 1060, "title": "Dashboard", "expand": "fill", "is_interactive": true },
+    "Inventory.dc.html": { "x": 1440, "y": 0, "w": 1360, "h": 900, "title": "Inventory", "expand": "fill", "is_interactive": true },
+    "Listing.dc.html": { "x": 2880, "y": 0, "w": 1360, "h": 1020, "title": "New listing", "expand": "fill", "is_interactive": true },
+    "Mobile.dc.html": { "x": 4320, "y": 0, "w": 390, "h": 844, "title": "Home on a phone", "is_interactive": true }
+  },
+  "order": ["Main.dc.html", "Inventory.dc.html", "Listing.dc.html", "Mobile.dc.html"],
+  "notes": {
+    "heading": { "x": 0, "y": -300, "text": "Second Story: first pass", "kind": "title1", "maxW": 4710 }
+  },
+  "designSystems": []
+}

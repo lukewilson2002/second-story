@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Second Story new listing</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#5546B8}a:hover{color:#2A2540}
+</style>
+</helmet>
+<div style="position: relative; display: flex; flex-wrap: wrap; min-height: 1020px; background: #F8F6FC; color: #2A2540; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.4">
+
+<nav aria-label="Main" style="flex: 1 1 200px; box-sizing: border-box; background: #EEE9FB; padding: 24px 16px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="#6B5BD0" stroke="#6B5BD0" stroke-width="1.5" stroke-linejoin="round"><path d="M3 4h8l10 10-7 7L4 11z"/><circle cx="8" cy="8" r="1.6" fill="#EEE9FB" stroke="none"/></svg>
+<span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 19px; color: #2A2540">Second Story</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<a href="Main.dc.html" style="display: block; padding: 11px 12px; border-radius: 10px; color: #524C68; font-weight: 500; text-decoration: none">Dashboard</a>
+<a href="Inventory.dc.html" style="display: block; padding: 11px 12px; border-radius: 10px; color: #524C68; font-weight: 500; text-decoration: none">Inventory</a>
+<a href="Listing.dc.html" aria-current="page" style="display: block; padding: 11px 12px; border-radius: 10px; background: #FFFFFF; color: #5546B8; font-weight: 600; text-decoration: none">Listings</a>
+<a href="#sales" style="display: block; padding: 11px 12px; border-radius: 10px; color: #524C68; font-weight: 500; text-decoration: none">Sales</a>
+<a href="#lookup" style="display: block; padding: 11px 12px; border-radius: 10px; color: #524C68; font-weight: 500; text-decoration: none">Price lookup</a>
+<a href="#settings" style="display: block; padding: 11px 12px; border-radius: 10px; color: #524C68; font-weight: 500; text-decoration: none">Settings</a>
+</div>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<div>
+<p style="margin: 0; color: #635D7A"><a href="Listing.dc.html" style="color: #635D7A">Listings</a> / New</p>
+<h1 style="margin: 2px 0 0; font-family: 'Outfit', sans-serif; font-size: 30px; font-weight: 700">New listing</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 1px solid #D3CCE3; border-radius: 10px; background: #FFFFFF; color: #2A2540; font: 600 14px Inter, sans-serif; cursor: pointer">Save as draft</button>
+<button type="button" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: #6B5BD0; color: #FFFFFF; font: 600 14px Inter, sans-serif; cursor: pointer">Publish</button>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px">
+
+<div style="flex: 2 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<section style="background: #FFFFFF; border: 1px solid #E9E4F2; border-radius: 16px; padding: 20px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px">
+<h2 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 600">Items in this listing</h2>
+<button type="button" style="min-height: 40px; padding: 0 12px; border: 1px solid #D3CCE3; border-radius: 10px; background: #FFFFFF; color: #2A2540; font: 600 13px Inter, sans-serif; cursor: pointer">Add from inventory</button>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #E9E4F2">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 10px; background: #E6E0FA; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">N64</span>
+<div style="flex: 1; min-width: 0"><div style="font-weight: 600">The Legend of Zelda: Ocarina of Time</div><div style="color: #635D7A">Games › N64, 2 in stock</div></div>
+<div style="display: flex; align-items: center; gap: 12px; font-variant-numeric: tabular-nums">
+<div role="group" aria-label="Quantity of Ocarina of Time" style="display: flex; align-items: center; border: 1px solid #D3CCE3; border-radius: 10px">
+<button type="button" aria-label="Decrease quantity" style="width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: #2A2540; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+<span style="min-width: 22px; text-align: center; font-weight: 600">1</span>
+<button type="button" aria-label="Increase quantity" style="width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: #2A2540; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+</div>
+<div style="min-width: 60px; text-align: right"><div>$14.00</div><div style="color: #635D7A">each</div></div>
+<button type="button" aria-label="Remove Ocarina of Time from this listing" style="width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: #635D7A; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #E9E4F2">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 10px; background: #E6E0FA; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">N64</span>
+<div style="flex: 1; min-width: 0"><div style="font-weight: 600">N64 Expansion Pak</div><div style="color: #635D7A">Games › N64, 1 in stock</div></div>
+<div style="display: flex; align-items: center; gap: 12px; font-variant-numeric: tabular-nums">
+<div role="group" aria-label="Quantity of N64 Expansion Pak" style="display: flex; align-items: center; border: 1px solid #D3CCE3; border-radius: 10px">
+<button type="button" aria-label="Decrease quantity" style="width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: #2A2540; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+<span style="min-width: 22px; text-align: center; font-weight: 600">1</span>
+<button type="button" aria-label="Increase quantity" style="width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: #2A2540; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+</div>
+<div style="min-width: 60px; text-align: right"><div>$4.00</div><div style="color: #635D7A">each</div></div>
+<button type="button" aria-label="Remove N64 Expansion Pak from this listing" style="width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: #635D7A; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</div>
+</div>
+<div style="display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid #E9E4F2; font-weight: 600; font-variant-numeric: tabular-nums"><span>Cost of goods</span><span>$18.00</span></div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E9E4F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 600">Details</h2>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500">Title
+<input type="text" value="Zelda Ocarina of Time N64 with Expansion Pak, tested" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540">
+</label>
+<div role="group" aria-label="Marketplaces" style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-weight: 500">Marketplaces</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" aria-pressed="true" style="min-height: 44px; padding: 0 14px 0 10px; border: 1px solid #6B5BD0; border-radius: 999px; background: #E6E0FA; color: #43348F; font: 600 14px Inter, sans-serif; display: flex; align-items: center; gap: 6px; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>eBay</button>
+<button type="button" aria-pressed="true" style="min-height: 44px; padding: 0 14px 0 10px; border: 1px solid #6B5BD0; border-radius: 999px; background: #E6E0FA; color: #43348F; font: 600 14px Inter, sans-serif; display: flex; align-items: center; gap: 6px; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Mercari</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 14px; border: 1px solid #D3CCE3; border-radius: 999px; background: #FFFFFF; color: #2A2540; font: 500 14px Inter, sans-serif; cursor: pointer">Facebook Marketplace</button>
+<button type="button" aria-pressed="false" style="min-height: 44px; padding: 0 14px; border: 1px solid #D3CCE3; border-radius: 999px; background: #FFFFFF; color: #2A2540; font: 500 14px Inter, sans-serif; cursor: pointer">Vinted</button>
+<button type="button" style="min-height: 44px; padding: 0 14px 0 10px; border: 1px dashed #8F7FE0; border-radius: 999px; background: transparent; color: #5546B8; font: 600 14px Inter, sans-serif; display: flex; align-items: center; gap: 6px; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New marketplace</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: end; margin-top: 8px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">eBay link (optional)</span>
+<input type="url" placeholder="https://" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540">
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Mercari link (optional)</span>
+<input type="url" placeholder="https://" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540">
+</label>
+</div></div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E9E4F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 600">Price and shipping</h2>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: end">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Asking price</span>
+<input type="text" inputmode="decimal" value="$44.99" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 600 14px Inter, sans-serif; color: #2A2540; font-variant-numeric: tabular-nums">
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Quantity</span>
+<input type="text" inputmode="numeric" value="1" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540; font-variant-numeric: tabular-nums">
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Shipping charged</span>
+<input type="text" inputmode="decimal" value="$5.00" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540; font-variant-numeric: tabular-nums">
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Shipping cost</span>
+<input type="text" inputmode="decimal" value="$5.60" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540; font-variant-numeric: tabular-nums">
+</label>
+</div>
+<p style="margin: 0; color: #635D7A">Both shipping fields are optional and start at $0.00. Fill them in to sharpen the fee, minimum price and profit estimates; you enter the real amounts when you mark the listing sold.</p>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E9E4F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 600">Commission (optional)</h2>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: end">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Share of profit</span>
+<input type="text" inputmode="decimal" value="20%" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540; font-variant-numeric: tabular-nums">
+</label>
+<label style="grid-column: span 3; display: flex; flex-direction: column; gap: 6px; font-weight: 500"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Paid to</span>
+<input type="text" placeholder="Friend's name" style="height: 44px; width: 100%; padding: 0 12px; box-sizing: border-box; border: 1px solid #D3CCE3; border-radius: 10px; font: 400 14px Inter, sans-serif; color: #2A2540">
+</label>
+</div>
+</section>
+
+</div>
+
+<aside aria-label="Profit summary" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<section style="background: #FFE3D3; border-radius: 16px; padding: 20px">
+<div style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #524C68">Minimum price to break even</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; font-variant-numeric: tabular-nums">
+<div><div style="font-weight: 600">eBay</div><div>Asking price: <span style="font-weight: 700">+$22.40</span></div></div>
+<div style="font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.15">$22.59</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #F2C4AB; font-variant-numeric: tabular-nums">
+<div><div style="font-weight: 600">Mercari</div><div>Asking price: <span style="font-weight: 700">+$23.21</span></div></div>
+<div style="font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 700; line-height: 1.15">$21.78</div>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E9E4F2; border-radius: 16px; padding: 20px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px">
+<h2 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 600">If it sells at asking</h2>
+<div role="group" aria-label="Marketplace shown" style="display: flex; background: #EEE9FB; border-radius: 10px; padding: 3px; gap: 2px">
+<button type="button" aria-pressed="true" style="min-height: 38px; padding: 0 12px; border: 0; border-radius: 8px; background: #FFFFFF; color: #5546B8; font: 600 13px Inter, sans-serif; cursor: pointer">eBay</button>
+<button type="button" aria-pressed="false" style="min-height: 38px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: #524C68; font: 500 13px Inter, sans-serif; cursor: pointer">Mercari</button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-variant-numeric: tabular-nums">
+<div style="display: flex; justify-content: space-between"><span>Item price</span><span>$44.99</span></div>
+<div style="display: flex; justify-content: space-between"><span>Shipping charged</span><span>$5.00</span></div>
+<div style="display: flex; justify-content: space-between; color: #524C68"><span>Marketplace fee</span><span>−$6.90</span></div>
+<div style="display: flex; justify-content: space-between; color: #524C68"><span>Shipping cost</span><span>−$5.60</span></div>
+<div style="display: flex; justify-content: space-between; color: #524C68"><span>Cost of goods</span><span>−$18.00</span></div>
+<div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #E9E4F2"><span>Profit before commission</span><span>$19.49</span></div>
+<div style="display: flex; justify-content: space-between; color: #524C68"><span>Commission, 20%</span><span>−$3.90</span></div>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: #D5F2E3; font-variant-numeric: tabular-nums"><span style="font-weight: 600">Your profit</span><span style="font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 700; color: #0F5C3D">$15.59</span></div>
+<div style="display: flex; justify-content: space-between; margin-top: 10px; color: #635D7A; font-variant-numeric: tabular-nums"><span>Margin on total paid</span><span>31.2%</span></div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E9E4F2; border-radius: 16px; padding: 16px 20px">
+<div style="font-weight: 600">Your fee rules</div>
+<p style="margin: 4px 0 0; color: #524C68">eBay: 13% of item price plus shipping, and $0.40 per order.</p>
+<p style="margin: 4px 0 8px; color: #524C68">Mercari: 10% of item price plus shipping, and $0.50 per order.</p>
+<a href="#settings" style="font-weight: 600">Edit fee rules</a>
+</section>
+
+</aside>
+
+</div>
+</main>
+
+<div style="position: absolute; right: 28px; bottom: 28px; display: flex; flex-direction: column; align-items: flex-end; gap: 12px">
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px">
+<button type="button" style="min-height: 46px; padding: 0 16px 0 9px; border: 1px solid #E9E4F2; border-radius: 999px; background: #FFFFFF; color: #2A2540; font: 600 14px Inter, sans-serif; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 14px rgba(42, 37, 64, 0.12); cursor: pointer"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 999px; background: #D6ECFB; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></span>Price lookup</button>
+<button type="button" style="min-height: 46px; padding: 0 16px 0 9px; border: 1px solid #E9E4F2; border-radius: 999px; background: #FFFFFF; color: #2A2540; font: 600 14px Inter, sans-serif; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 14px rgba(42, 37, 64, 0.12); cursor: pointer"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 999px; background: #D5F2E3; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>Mark sold</button>
+<button type="button" style="min-height: 46px; padding: 0 16px 0 9px; border: 1px solid #E9E4F2; border-radius: 999px; background: #FFFFFF; color: #2A2540; font: 600 14px Inter, sans-serif; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 14px rgba(42, 37, 64, 0.12); cursor: pointer"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 999px; background: #FFE3D3; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 4h8l10 10-7 7L4 11z"/></svg></span>New listing</button>
+<button type="button" style="min-height: 46px; padding: 0 16px 0 9px; border: 1px solid #E9E4F2; border-radius: 999px; background: #FFFFFF; color: #2A2540; font: 600 14px Inter, sans-serif; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 14px rgba(42, 37, 64, 0.12); cursor: pointer"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 999px; background: #FCDDEA; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6v12M8 6v12M11 6v12M15 6v12M18 6v12M20 6v12"/></svg></span>Scan barcode</button>
+<button type="button" style="min-height: 52px; padding: 0 20px 0 16px; border: 0; border-radius: 999px; background: #6B5BD0; color: #FFFFFF; font: 600 15px Inter, sans-serif; display: flex; align-items: center; gap: 10px; box-shadow: 0 6px 18px rgba(107, 91, 208, 0.35); cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add item</button>
+</div>
+</sc-if>
+<button type="button" aria-label="Quick actions" onClick="{{ toggle }}" style="width: 60px; height: 60px; border: 0; border-radius: 999px; background: #6B5BD0; color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(107, 91, 208, 0.35); cursor: pointer">
+<sc-if value="{{ closed }}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></sc-if>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></sc-if>
+</button>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"menuOpen":{"editor":"boolean","default":false,"section":"Quick actions"},"$preview":{"width":1360,"height":1020}}'>
+class Component extends DCLogic {
+renderVals() {
+var self = this;
+var fromProp = this.props.menuOpen != null ? this.props.menuOpen : false;
+var open = this.state && this.state.open != null ? this.state.open : fromProp;
+return {
+open: open,
+closed: !open,
+toggle: function () { self.setState({ open: !open }); }
+};
+}
+}
+</script>
+</body>
+</html>

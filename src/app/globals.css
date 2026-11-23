@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens from docs/design.md section 12 and the boards in docs/design.
+ * Use these names in class names (bg-ground, text-ink-muted, rounded-card). Do not hard-code hex values in components.
+ */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ground: #f8f6fc;
+  --color-surface: #ffffff;
+  --color-sidebar: #eee9fb;
+  --color-ink: #2a2540;
+  --color-ink-secondary: #524c68;
+  --color-ink-muted: #635d7a;
+  --color-border: #e9e4f2;
+  --color-border-input: #d3cce3;
+  --color-primary: #6b5bd0;
+  --color-primary-hover: #5546b8;
+  --color-primary-text: #5546b8;
+  --color-lilac: #e6e0fa;
+  --color-mint: #d5f2e3;
+  --color-sky: #d6ecfb;
+  --color-peach: #ffe3d3;
+  --color-pink: #fcddea;
+  --color-butter: #fff1c2;
+  --color-profit: #136f4b;
+
+  /* From the boards: text colours for pastel fills, and a few supporting fills. */
+  --color-lilac-ink: #43348f;
+  --color-sky-ink: #1f4e79;
+  --color-profit-strong: #0f5c3d;
+  --color-neutral: #eeecf3;
+  --color-track: #f1eef8;
+  --color-peach-border: #f2c4ab;
+  --color-dashed: #8f7fe0;
+
+  /* Not on the boards. Errors need a colour, and this red reaches 4.5:1 on white and on its tint. */
+  --color-danger: #b3261e;
+  --color-danger-tint: #fce8e6;
+
+  /* Chart series: mid-tone versions of the pastels. */
+  --color-chart-violet: #8f7fe0;
+  --color-chart-green: #5fc79a;
+  --color-chart-orange: #f29a6e;
+  --color-chart-blue: #6db5ec;
+  --color-chart-bar: #cfc6f5;
+  --color-age-fresh: #4fb98a;
+  --color-age-mid: #a9d4f5;
+  --color-age-old: #e8824f;
+
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --radius-inner: 8px;
+  --radius-pill: 999px;
+
+  --shadow-menu: 0 4px 14px rgba(42, 37, 64, 0.12);
+  --shadow-fab: 0 6px 18px rgba(107, 91, 208, 0.35);
+}
+
+:root {
+  /* Height of the phone bottom nav. The shell and the fill-height table both use it. */
+  --bottom-nav-height: 65px;
+  /* Space the shell keeps free under the page content. DataTable reads it in fill-height mode. */
+  --shell-bottom-gap: calc(var(--bottom-nav-height) + 16px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  :root {
+    --shell-bottom-gap: 40px;
+  }
+}
+
+/* In the base layer so utilities such as text-ink and no-underline can override them. */
+@layer base {
+  html {
+    background: var(--color-ground);
+  }
+
+  body {
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  a {
+    color: var(--color-primary-text);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
+}
+
+/* Page title: Outfit 30px bold. */
+@utility text-h1 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+/* Card title: Outfit 17px semibold. */
+@utility text-h2 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+/* Small uppercase label above a stat. */
+@utility text-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-secondary);
+}
+
+/* Large tile number: Outfit 34px bold with tabular numerals. */
+@utility text-stat {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Money and counts: tabular numerals, right-aligned. Use on table cells. Tailwind's own `tabular-nums` sets the numerals alone. */
+@utility num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Visible only to screen readers and other assistive tech. */
+@utility visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The first thing in the tab order. Hidden until it has keyboard focus. */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -100px;
+  z-index: 50;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  padding: 0 16px;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
