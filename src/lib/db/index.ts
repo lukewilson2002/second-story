@@ -65,9 +65,14 @@ function logIdleClientError(error: Error): void {
   console.warn(`An idle database connection was closed (${code}). The pool will reconnect.`);
 }
 
+/** Opens a handle on a Postgres server by URL. The caller must `destroy()` it. */
+export function createRemoteDb(url: string): Db {
+  return new Kysely<DB>({ dialect: remoteDialect(url) });
+}
+
 function createDb(): Db {
   const url = process.env.DATABASE_URL?.trim();
-  if (url) return new Kysely<DB>({ dialect: remoteDialect(url) });
+  if (url) return createRemoteDb(url);
   if (process.env.VERCEL) {
     throw new Error("DATABASE_URL is not set. The local PGlite database is for dev and tests only.");
   }
