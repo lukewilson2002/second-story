@@ -51,20 +51,21 @@ test("photos: signed upload request, saved row, thumbnail, reorder and delete, w
   await page.reload();
   const saved = await sources();
   expect(saved).toHaveLength(2);
-  expect(saved[0]).toContain(uploads[0]?.publicId ?? "missing");
-  expect(saved[1]).toContain(uploads[1]?.publicId ?? "missing");
+  // Booleans, not the addresses themselves: a failure message would print the cloud name.
+  expect(saved[0]?.includes(uploads[0]?.publicId ?? "missing"), "photo 1 is the first upload").toBe(true);
+  expect(saved[1]?.includes(uploads[1]?.publicId ?? "missing"), "photo 2 is the second upload").toBe(true);
   await expect
     .poll(() => page.getByRole("img", { name: "Photo 1" }).evaluate((element) => element instanceof HTMLImageElement && element.naturalWidth > 0))
     .toBe(true);
 
   await page.getByRole("button", { name: "Move photo 2 earlier" }).click();
-  await expect.poll(async () => (await sources())[0]).toContain(uploads[1]?.publicId ?? "missing");
+  await expect.poll(async () => (await sources())[0]?.includes(uploads[1]?.publicId ?? "missing") ?? false).toBe(true);
 
   // The first photo is the thumbnail in the inventory table.
   await page.goto(`/inventory?q=${encodeURIComponent(title)}`);
   const thumbnail = page.getByRole("table", { name: "Inventory" }).locator("tbody img").first();
   await expect(thumbnail).toBeVisible();
-  expect(await thumbnail.getAttribute("src")).toContain(uploads[1]?.publicId ?? "missing");
+  expect(((await thumbnail.getAttribute("src")) ?? "").includes(uploads[1]?.publicId ?? "missing"), "the thumbnail is the first photo").toBe(true);
 
   await page.goBack();
   await page.getByRole("button", { name: "Delete photo 1" }).click();

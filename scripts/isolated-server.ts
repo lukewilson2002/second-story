@@ -53,7 +53,7 @@ const env: Record<string, string | undefined> = {
 if (mode === "e2e") {
   // Blank values set here win over anything `next start` loads, so a default e2e run cannot spend the owner's API quota.
   // With E2E_REAL_SERVICES the real values are read from .env.local here and passed on.
-  // `next start` does not load that file itself in this setup, because the env files were already loaded once above.
+  // Without this the server started by `next start` here came up with none of the four set.
   const localPath = path.join(root, ".env.local");
   const local = realServices && existsSync(localPath) ? parseEnv(readFileSync(localPath, "utf8")) : {};
   for (const key of ["CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET", "RAPIDAPI_KEY"]) {
