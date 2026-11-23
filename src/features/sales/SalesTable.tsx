@@ -217,7 +217,7 @@ export function SalesTable({ rows, initialFilter }: SalesTableProps) {
           getRowId={(row) => row.id}
           minWidth={940}
           fillHeight
-          // On a phone the filters use most of the window. Six rows keep a page worth reading; the page scrolls instead.
+          // On a phone the filters leave room for only three rows. If fewer than six fit, six are shown and the page scrolls.
           minRows={6}
           noun={["sale", "sales"]}
           initialSort={{ columnId: "sold", desc: true }}

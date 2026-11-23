@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { collectPageErrors, findSmallControls } from "./helpers";
+import { collectPageErrors, findLowContrast, findSmallControls } from "./helpers";
 
 const STATIC_ROUTES = [
   "/",
@@ -33,7 +33,7 @@ async function firstDetailHref(page: Page, listPath: string, prefix: string): Pr
   return hrefs.find((href) => /^\/[a-z]+\/[0-9a-f-]{36}$/.test(href)) ?? null;
 }
 
-test("every page renders without errors, sideways scroll or undersized controls", async ({ page }, testInfo) => {
+test("every page renders without errors, sideways scroll, undersized controls or low-contrast text", async ({ page }, testInfo) => {
   test.setTimeout(120_000);
   const errors = collectPageErrors(page);
   const routes = [...STATIC_ROUTES];
@@ -58,6 +58,9 @@ test("every page renders without errors, sideways scroll or undersized controls"
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     if (overflow > 0) problems.push(`${path}: scrolls sideways by ${overflow}px`);
     for (const control of await findSmallControls(page)) problems.push(`${path}: "${control.text}" is ${control.height}px tall`);
+    for (const low of await findLowContrast(page)) {
+      problems.push(`${path}: "${low.text}" has ${low.ratio}:1 contrast (${low.color} on ${low.background})`);
+    }
     if (process.env.SWEEP_SCREENSHOTS) {
       await page.screenshot({ path: `${process.env.SWEEP_SCREENSHOTS}/${testInfo.project.name}-${String(index).padStart(2, "0")}.png`, fullPage: true });
     }

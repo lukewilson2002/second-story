@@ -141,3 +141,24 @@ test("quick actions are on every page", async ({ page }) => {
     }
   }
 });
+
+test("the main tables page forward", async ({ page }) => {
+  for (const path of ["/inventory", "/listings", "/sales"]) {
+    await page.goto(path);
+    const range = page.locator("main").getByText(/^Showing [\d,]+ to [\d,]+ of [\d,]+ \w+$/).filter({ visible: true });
+    await expect(range, path).toHaveText(/^Showing 1 to ([6-9]|\d{2,}) of/);
+    await page.locator("main").getByRole("button", { name: "Next" }).click();
+    await expect(range, path).not.toHaveText(/^Showing 1 to/);
+  }
+});
+
+test("the lookup API answers without calling out when it has nothing to call", async ({ page }) => {
+  const notConfigured = await page.request.get("/api/lookup?q=dune&source=ebay");
+  expect(notConfigured.status()).toBe(200);
+  const body = (await notConfigured.json()) as { query: string; sources: { source: string; status: string }[] };
+  expect(body.query).toBe("dune");
+  expect(body.sources).toEqual([expect.objectContaining({ source: "ebay", status: "not_configured" })]);
+
+  expect((await page.request.get("/api/lookup?q=")).status()).toBe(400);
+  expect((await page.request.get("/api/lookup?q=dune&source=nope")).status()).toBe(400);
+});

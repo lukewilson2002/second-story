@@ -38,7 +38,7 @@ test("a listing on two marketplaces: take one down, sell on the other, pay the c
   // With two marketplaces the mark-sold form asks which one it sold on.
   await openListing(page, "/listings", title);
   await page.getByRole("main").getByRole("link", { name: "Mark sold" }).click();
-  await expect(page.getByRole("group", { name: /marketplace/i }).or(page.getByLabel(/marketplace/i)).first()).toBeVisible();
+  await expect(page.getByLabel("Sold on")).toBeVisible();
 
   await openListing(page, "/listings", title);
   await page.getByRole("button", { name: "Take down from Mercari" }).click();
@@ -49,6 +49,8 @@ test("a listing on two marketplaces: take one down, sell on the other, pay the c
   await expect(page.getByRole("button", { name: "Take down from eBay" })).toBeVisible();
 
   await page.getByRole("main").getByRole("link", { name: "Mark sold" }).click();
+  await expect(page.getByLabel("Sale price", { exact: true })).toBeVisible();
+  await expect(page.getByLabel("Sold on")).toHaveCount(0);
   await page.getByLabel("Sale price", { exact: true }).fill("30.00");
   await page.getByRole("button", { name: "Mark sold" }).click();
   await expect(page).toHaveURL(/\/sales$/);
