@@ -31,7 +31,6 @@ test("the owner can log in, land on the page they asked for, and log out", async
   await page.getByLabel("Password").fill(password);
   await page.getByRole("button", { name: "Log in" }).click();
   await expect(page).toHaveURL(/\/sales$/);
-  await expect(page.getByRole("heading", { level: 1, name: "Sales" })).toBeVisible();
 
   const nav = page.getByRole("navigation", { name: isMobile ? "Sections" : "Main" });
   await expect(nav.getByRole("link", { name: "Sales" })).toHaveAttribute("aria-current", "page");
@@ -44,5 +43,6 @@ test("the owner can log in, land on the page they asked for, and log out", async
 
 test("logging in from the login page goes to the dashboard", async ({ page }) => {
   await logIn(page);
-  await expect(page.getByRole("heading", { level: 1, name: "Dashboard" })).toBeVisible();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator("main#main")).toBeVisible();
 });

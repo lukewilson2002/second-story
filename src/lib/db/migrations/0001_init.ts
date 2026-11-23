@@ -153,6 +153,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .on("item_photo")
     .columns(["item_id", "position"])
     .execute();
+  await db.schema.createIndex("item_photo_user_id_idx").on("item_photo").column("user_id").execute();
 
   await db.schema
     .createTable("marketplace")
@@ -259,6 +260,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .on("listing_item")
     .column("item_id")
     .execute();
+  await db.schema.createIndex("listing_item_user_id_idx").on("listing_item").column("user_id").execute();
 
   await db.schema
     .createTable("listing_marketplace")
@@ -287,6 +289,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .on("listing_marketplace")
     .column("marketplace_id")
     .execute();
+  await db.schema.createIndex("listing_marketplace_user_id_idx").on("listing_marketplace").column("user_id").execute();
 
   await db.schema
     .createTable("sale")

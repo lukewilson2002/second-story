@@ -36,17 +36,12 @@ test("form primitives turn typed text into cents and basis points", async ({ pag
   await expect(condition).toHaveAccessibleDescription("Pick a condition");
 
   const category = page.getByLabel("Category");
-  await expect(category.getByRole("option")).toHaveText([
-    "Choose a category",
-    "Book",
-    "Clothing",
-    "Games",
-    /N64$/,
-    "Movie",
-    /Blu-ray$/,
-    /DVD$/,
-    /VHS$/,
-  ]);
+  // Other tests may add categories, so only the seeded ones are checked. Children are indented under their parent.
+  await expect(category.getByRole("option", { name: "Choose a category" })).toBeAttached();
+  await expect(category.getByRole("option", { name: "Book", exact: true })).toBeAttached();
+  const options = await category.getByRole("option").allTextContents();
+  expect(options.indexOf("Movie")).toBeGreaterThan(-1);
+  expect(options.find((option) => option.trim() === "DVD")).toMatch(/^\s+DVD$/);
 });
 
 test("stepper, segmented control and dialog work", async ({ page }) => {
@@ -112,9 +107,9 @@ test("the table fills the window height, sorts, pages and selects", async ({ pag
   await table.getByRole("button", { name: "Days held" }).click();
   await expect(bodyRows.first()).not.toContainText("–");
 
-  await page.getByRole("button", { name: "Next" }).click();
+  await page.getByRole("button", { name: "Next", exact: true }).click();
   await expect(page.getByText(`Showing ${tall.rows + 1} to`)).toBeVisible();
-  await expect(page.getByRole("button", { name: "Previous" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Previous", exact: true })).toBeEnabled();
 
   await table.getByRole("checkbox", { name: /^Select Demo item/ }).first().check();
   await expect(page.getByTestId("selection-count")).toHaveText("1 selected");

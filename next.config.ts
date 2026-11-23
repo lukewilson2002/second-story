@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
     : {}),
   // PGlite loads its WebAssembly and data files from its own folder at runtime, which breaks if it is bundled.
   serverExternalPackages: ["@electric-sql/pglite", "pg"],
+  // The dev badge sits over the phone bottom nav and the sidebar's Log out button, and blocks clicks on them.
+  devIndicators: false,
   images: {
     remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },

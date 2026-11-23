@@ -22,7 +22,7 @@ Next.js 16 differs from older versions. Its docs ship in `node_modules/next/dist
 
 - Middleware is called Proxy. The file is `src/proxy.ts`.
 - `params`, `searchParams` and `cookies()` are async. Await them.
-- `cacheComponents` is off on purpose. Every signed-in page is dynamic, so pages just `await` their data. Do not add `"use cache"`.
+- `cacheComponents` is off on purpose (the scaffold turns it on). Every signed-in page is dynamic, so pages just `await` their data. Do not add `"use cache"`.
 
 ## 2. Commands
 
@@ -46,7 +46,7 @@ First run: `pnpm install`, `pnpm db:reset`, `pnpm db:seed:demo`, `pnpm dev`. The
 
 ### Working alongside other agents
 
-PGlite allows one process per data directory, and `next dev` allows one server per build folder. Two agents running `pnpm dev`, or `pnpm db:*` while a dev server is up, will be refused with a clear error (a lock file guards the directory). So:
+PGlite allows one process per data directory, and `next dev` allows one server per build folder. A lock file guards each data directory: once a process has run its first query, any other process that opens the same directory is refused with a clear error. A dev server only takes the lock on its first database query, so do not rely on it. Never run `pnpm db:*` against a directory a server is using. So:
 
 - Run your own server with `PORT=<your port> pnpm dev:isolated`. It creates `.pglite/dev-<port>` and `.next-dev-<port>`, all gitignored.
 - Run Playwright with your own port: `E2E_PORT=<your port> pnpm test:e2e`. Add `E2E_DEV=1` to skip the production build while writing tests.
@@ -396,4 +396,6 @@ Playwright:
 - One worker, one shared database. A test that writes should create what it needs and not depend on exact counts from the seed.
 - `e2e/helpers.ts` has `logIn(page)` and `ownerCredentials()` for tests that start signed out.
 
-Before handing work back, run `pnpm typecheck`, `pnpm lint`, `pnpm test` and your e2e tests.
+Before handing work back, run `pnpm typecheck`, `pnpm lint`, `pnpm test` and your e2e tests. The first three cover the whole tree, so another agent's unfinished work can turn them red. Check whether a failure is in your files before chasing it.
+
+The top-level specs (`e2e/login.spec.ts`, `e2e/shell.spec.ts`, `e2e/primitives.spec.ts`) check only the shell, login and primitives. They do not depend on any page's heading or content, so replacing a placeholder should not break them.

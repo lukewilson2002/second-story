@@ -1,27 +1,31 @@
 import { expect, test } from "@playwright/test";
 
-const ROUTES: [path: string, heading: string][] = [
-  ["/", "Dashboard"],
-  ["/scan", "Scan barcode"],
-  ["/inventory", "Inventory"],
-  ["/inventory/new", "Add item"],
-  ["/inventory/import", "Import CSV"],
-  ["/listings", "Listings"],
-  ["/listings/new", "New listing"],
-  ["/sales", "Sales"],
-  ["/sales/new", "Mark sold"],
-  ["/lookup", "Price lookup"],
-  ["/settings", "Settings"],
-  ["/settings/categories", "Categories"],
-  ["/settings/marketplaces", "Marketplaces and fee rules"],
-  ["/settings/commission", "Default commission"],
+// Only what the foundation owns is checked here: the page answers, and it sits inside the shell.
+// Headings and page content belong to the features and change as they are built.
+const ROUTES = [
+  "/",
+  "/scan",
+  "/inventory",
+  "/inventory/new",
+  "/inventory/import",
+  "/listings",
+  "/listings/new",
+  "/sales",
+  "/sales/new",
+  "/lookup",
+  "/settings",
+  "/settings/categories",
+  "/settings/marketplaces",
+  "/settings/commission",
 ];
 
-test("every route in the route map renders inside the shell", async ({ page }) => {
-  for (const [path, heading] of ROUTES) {
-    await page.goto(path);
-    await expect(page.getByRole("heading", { level: 1 }), path).toHaveText(heading);
-    await expect(page.getByRole("link", { name: "Add item" }), path).toBeVisible();
+test("every route in the route map renders inside the shell", async ({ page, isMobile }) => {
+  for (const path of ROUTES) {
+    const response = await page.goto(path);
+    expect(response?.status(), path).toBe(200);
+    expect(new URL(page.url()).pathname, path).toBe(path);
+    await expect(page.locator("main#main"), path).toBeVisible();
+    await expect(page.getByRole("navigation", { name: isMobile ? "Sections" : "Main" }), path).toBeVisible();
   }
 });
 
@@ -37,10 +41,11 @@ test("the nav reaches each section and marks the current one", async ({ page, is
   }
   if (isMobile) {
     await expect(page.getByRole("navigation", { name: "Main" })).toBeHidden();
-    await page.getByRole("link", { name: "Settings" }).click();
-    await expect(page.getByRole("heading", { level: 1, name: "Settings" })).toBeVisible();
-    await page.getByRole("link", { name: "Price lookup" }).click();
-    await expect(page.getByRole("heading", { level: 1, name: "Price lookup" })).toBeVisible();
+    const topBar = page.getByRole("banner");
+    await topBar.getByRole("link", { name: "Settings" }).click();
+    await expect(page).toHaveURL(/\/settings$/);
+    await topBar.getByRole("link", { name: "Price lookup" }).click();
+    await expect(page).toHaveURL(/\/lookup$/);
   } else {
     await expect(page.getByRole("navigation", { name: "Sections" })).toBeHidden();
   }
